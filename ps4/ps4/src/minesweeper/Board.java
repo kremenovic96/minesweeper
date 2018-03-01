@@ -5,6 +5,8 @@ package minesweeper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * TODO: Specification
@@ -14,59 +16,75 @@ public class Board {
     // TODO: Abstraction function, rep invariant, rep exposure, thread safety
     /*
      * ADT for representing board consisting of Square objects
-     * rep safety: board is nonnegative size 
-     * Abstraction function: Array of Square objects representing 2D space.
+     * rep invariant: board != null
+     * Abstraction function: map representing Square objects 
+     * Thread safety argument:using thread-safe data structure map to store 
+     * Square objects
      */
     
     // TODO: Specify, test, and implement in problem 2
     private class Coordinate{
-        public int row;
-        public int col;
+        private final int row;
+        private final int col;
         
         public Coordinate(int x, int y) {
             this.row = x;
             this.col =y;
         }
+        @Override
+        public boolean equals(Object thatObject) {
+            if (!(thatObject instanceof Coordinate)) return false;
+            Coordinate c = (Coordinate) thatObject;
+            return this.row==c.row && this.col==c.col;
+        }
+        @Override
+        public int hashCode() {
+            int hash = 7;
+            hash = 71 * hash + this.row;
+            hash = 71 * hash + this.col;
+            return hash;
+        }
     }
     
     private final int rows;
     private final int cols;
-    private final Square[][] board;
-  
+    //private final Square[][] board;
+    private ConcurrentMap<Coordinate, Square> sq;
     public Board(int rows, int cols) {
+        sq = new ConcurrentHashMap<>(rows*cols);
         this.rows = rows;
         this.cols = cols;
-        this.board = new Square[rows][cols];
         for(int i = 0; i < rows; i++) {
             for(int j = 0;j<cols; j++) {
-                board[i][j] = new Untouched(Math.random()<0.25);
+                sq.put(new Coordinate(i,j), new Untouched(Math.random()<0.25));
             }
         }
-        checkRep();
     }
        
-    private boolean checkCoord(int x, int y) {
+    private synchronized boolean checkCoord(int x, int y) {
         return x>=0 && y>=0 && x<rows && y<cols;
     }
-    public void checkRep() {
-        assert(rows>-1);
-        assert(cols>-1);
-    }
+
     
-    public String flag(int x, int y) {
+    public  String flag(int x, int y) {
         if (checkCoord(x, y)){
-        Square sq =  board[x][y];
-        if (sq.isUntouched()) 
-            board[x][y] = sq.flag();       
+            Coordinate c = new Coordinate(x,y);
+        //Square sq =  board[x][y];
+        if (sq.get(c).isUntouched()) 
+            sq.put(c, sq.get(c).flag());
+        //  board[x][y] = sq.flag(); 
+
         }
         return this.toString();
     }
     
-    public String deflag(int x, int y) {
+    public  String deflag(int x, int y) {
         if (checkCoord(x,y)) {
-            Square sq = board[x][y];
-            if(sq.isFlag())
-                board[x][y] = sq.deflag();
+           // Square sq = board[x][y];
+            Coordinate c = new Coordinate(x,y);
+            if(sq.get(c).isFlag())
+                sq.put(c, sq.get(c).deflag());
+              //  board[x][y] = sq.deflag();
         }
         return this.toString();
     }
@@ -81,16 +99,17 @@ public class Board {
      * subsequent BOARD messages show updated bomb counts in the adjacent 
      * squares. After removing the bomb continue to the next step.
      */
-    public String dig(int x, int y) {
+    public synchronized String dig(int x, int y) {
         String message = null;
         if (checkCoord(x,y)) {
-            Square sq = board[x][y];
-            boolean hasBomb = sq.isBomb();//continue this method
-            if (sq.isUntouched())
-                board[x][y] = sq.dig();
+            Coordinate c = new Coordinate(x,y);
+            //Square sq = board[x][y];
+            boolean hasBomb = sq.get(c).isBomb();//continue this method
+            if (sq.get(c).isUntouched())
+                sq.put(c, sq.get(c).dig());
             if (hasBomb) message = BOOM_MESSAGE;
             List<Coordinate> adj = getNeighboors(x,y);
-            for(Coordinate f:adj) board[f.row][f.col].decCount();
+            for(Coordinate f:adj) sq.get(f).decCount();//board[f.row][f.col].decCount();
             autoDigAround(x, y);
             
         }
@@ -109,9 +128,10 @@ public class Board {
         List<Coordinate> adj = getNeighboors(x,y);
         if (hasBombsAround(x, y)) return;
         for(Coordinate f:adj) {
-            if(board[f.row][f.col].isUntouched()) {
-                Square sq = board[f.row][f.col];
-                board[f.row][f.col] = sq.dig();
+            if(sq.get(f).isUntouched())/*if(board[f.row][f.col].isUntouched())*/ {
+                /*Square sq = board[f.row][f.col];
+                board[f.row][f.col] = sq.dig();*/
+                sq.put(f, sq.get(f).dig());
             }
             if(!hasBombsAround(f.row, f.col)) {
                 for(Coordinate s:getNeighboors(f.row, f.col))
@@ -126,7 +146,7 @@ public class Board {
     private boolean hasBombsAround(int x, int y) {
         List<Coordinate> adj = getNeighboors(x, y);
         for(Coordinate f : adj) {
-            if(board[f.row][f.col].isBomb())
+            if(sq.get(f).isBomb())
                 return true;                
         }
         return false;
@@ -166,7 +186,7 @@ public class Board {
         String rep = "";
         for(int i =0;i<rows;i++) {
             for(int j=0;j<cols;j++) {
-                rep += board[i][j];
+                rep += sq.get(new Coordinate(i,j));
             }
             rep += "\n";
         }

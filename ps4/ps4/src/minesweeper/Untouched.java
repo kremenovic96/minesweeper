@@ -2,7 +2,7 @@ package minesweeper;
 
 public class Untouched implements Square{
 
-    boolean bomb = false;
+    private boolean bomb = false;
     int count = 0;
     //count represent number of adjecent bombs
     public Untouched(boolean bomb) {

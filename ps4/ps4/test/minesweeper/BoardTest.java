@@ -69,6 +69,7 @@ public class BoardTest {
     @Test
     public void testDig() {
         Board a = new Board(3,3);
+       // System.out.println(a.sq.size());
         a.dig(0, 1);
         String aa = "- -\n---\n---\n";
         assertEquals(a.toString(), aa);   

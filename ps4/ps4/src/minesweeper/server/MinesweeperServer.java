@@ -54,6 +54,9 @@ public class MinesweeperServer {
         while (true) {
             // block until a client connects
             Socket socket = serverSocket.accept();
+            /*
+             * create thread for each player
+             */
             new Thread(new Runnable() {
                 public void run() {
                     try {
