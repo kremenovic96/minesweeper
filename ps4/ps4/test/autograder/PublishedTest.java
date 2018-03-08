@@ -96,7 +96,7 @@ public class PublishedTest {
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
         assertTrue("expected HELLO message", in.readLine().startsWith("Welcome"));
-
+        System.out.println(in.readLine());//kad ovo dodam onda prodje test ispod
         out.println("look");
         assertEquals("- - - - - - -", in.readLine());
         assertEquals("- - - - - - -", in.readLine());

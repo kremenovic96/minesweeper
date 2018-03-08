@@ -98,12 +98,14 @@ public class MinesweeperServer {
     private void handleConnection(Socket socket) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
+out.println("Welcome to Minesweeper. Board: "+b.cols+" columns by "+b.rows+"."+" Players: "+ "N "+"including you. "+" Type 'help' for help.\r\n");
+//out.flush();
         try {
             for (String line = in.readLine(); line != null; line = in.readLine()) {
                 String output = handleRequest(line);
                 if (output != null) {
                     // TODO: Consider improving spec of handleRequest to avoid use of null
+                    //System.out.print(out);
                     out.println(output);
                 }
             }
@@ -127,6 +129,7 @@ public class MinesweeperServer {
             // TODO Problem 5
             return "Please enter valid command like look,bye,flag or unflag";
         }
+        
         String[] tokens = input.split(" ");
         if (tokens[0].equals("look")) {
             // 'look' request
@@ -145,14 +148,18 @@ public class MinesweeperServer {
             if (tokens[0].equals("dig")) {
                 // 'dig x y' request
                 // TODO Problem 5
+                b.dig(x, y);
+                return b.toString();
             } else if (tokens[0].equals("flag")) {
                 // 'flag x y' request
                 // TODO Problem 5
                 b.flag(x, y);
+                return b.toString();
             } else if (tokens[0].equals("deflag")) {
                 // 'deflag x y' request
                 // TODO Problem 5
                 b.deflag(x, y);
+                return b.toString();
             }
         }
         // TODO: Should never get here, make sure to return in each of the cases above
@@ -283,7 +290,10 @@ public class MinesweeperServer {
         else {
            b = Board.fromFile(file.get().getAbsolutePath());
         }
+        //System.out.print("Welcome to Minesweeper. Board: "+b.cols+" columns by "+b.rows+"."+" Players: "+ "N "+"including you. "+" Type 'help' for help.\r\n");
         MinesweeperServer server = new MinesweeperServer(port, debug);
         server.serve();
+        
+        
     }
 }

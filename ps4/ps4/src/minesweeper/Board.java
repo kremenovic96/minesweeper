@@ -159,7 +159,7 @@ public class Board {
      *  for said neighbor square unless said neighbor square was 
      *  already dug before said change.
      */
-    private void autoDigAround(int x, int y) {
+    private synchronized void autoDigAround(int x, int y) {
         List<Coordinate> adj = getNeighboors(x,y);
         if (hasBombsAround(x, y)) return;
         for(Coordinate f:adj) {
@@ -178,7 +178,7 @@ public class Board {
     /*
      * Checks if there is Square with bomb that is adjecent to x,y pair.
      */
-    private boolean hasBombsAround(int x, int y) {
+    private synchronized boolean hasBombsAround(int x, int y) {
         List<Coordinate> adj = getNeighboors(x, y);
         for(Coordinate f : adj) {
             if(sq.get(f).isBomb())
@@ -222,6 +222,7 @@ public class Board {
         for(int i =0;i<rows;i++) {
             for(int j=0;j<cols;j++) {
                 rep += sq.get(new Coordinate(i,j));
+                if(j<cols-1) rep += " ";
             }
             rep += "\n";
         }
