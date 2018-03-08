@@ -50,5 +50,13 @@ public class Dugged implements Square{
     public boolean isDug() {
         return true;
     }
+    @Override
+    public void dePlaceBomb(){
+        return;
+    }
+    @Override
+    public void placeBomb() {
+        return;
+    }
 
 }

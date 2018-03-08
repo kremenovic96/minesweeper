@@ -52,4 +52,16 @@ public class Untouched implements Square{
     public boolean isUntouched() {
         return true;
     }
+    /*
+     * removes bomb, used only when reading from file and actually there is no
+     * bomb where .25probbability made it be there.
+     */
+    @Override
+    public void dePlaceBomb() {
+        this.bomb = false;
+    }
+    @Override
+    public void placeBomb() {
+        this.bomb = true;
+    }
 }

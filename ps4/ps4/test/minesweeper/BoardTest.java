@@ -5,6 +5,9 @@ package minesweeper;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
+
+
 import org.junit.Test;
 
 /**
@@ -80,5 +83,37 @@ public class BoardTest {
         aa = "- -\n---\n-  \n";
         assertEquals(a.toString(), aa);   
     }
+    /*
+     * test strategy:
+     * make a board from file
+     * check number of bombs in a board
+     * check correctness of number of bombs
+     */
+    @Test
+    public void testFromFIle() throws IOException {
+      //  Path path = FileSystems.getDefault().getPath(".");
+      //  System.out.println(path.toAbsolutePath());
+         Board a = Board.fromFile("test/minesweeper/board_file_5");
+        // System.out.println(a); 
+         int bombs=0;
+         for(int i=0;i<a.rows;i++) {
+             for(int j=0;j<a.cols;j++) {
+                 if(a.isBombAt(i, j)) bombs++;
+             }
+         }
+         assertEquals(2, bombs);
+   
+         a = Board.fromFile("test/minesweeper/myboard");
+        // System.out.println(a);
+         bombs =0;
+         for(int i=0;i<a.rows;i++) {
+             for(int j=0;j<a.cols;j++) {
+                 if(a.isBombAt(i, j)) bombs++;
+             }
+         }
+         assertEquals(5, bombs);
+
+    }
+        
     
 }

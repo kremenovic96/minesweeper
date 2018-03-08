@@ -53,4 +53,12 @@ public class Flagged implements Square {
     public boolean isFlag() {
         return true;
     }
+    @Override
+    public void dePlaceBomb() {
+        return;
+    }
+    @Override
+    public void placeBomb() {
+        return;
+    }
 }

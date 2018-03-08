@@ -3,11 +3,14 @@
  */
 package minesweeper;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
+import java.io.*;
 /**
  * TODO: Specification
  */
@@ -46,21 +49,53 @@ public class Board {
         }
     }
     
-    private final int rows;
-    private final int cols;
+    public final int rows;
+    public final int cols;
+    public Coordinate makeCoord(int x, int y) {
+        return new Coordinate(x,y);
+    }
     //private final Square[][] board;
     private ConcurrentMap<Coordinate, Square> sq;
-    public Board(int rows, int cols) {
+    public Board(int rowss, int colss) {
+        if(rowss == -1 && colss==-1) {
+            this.rows = 10; this.cols = 10;
+        }
+        else {
+        this.rows = rowss;
+        this.cols = colss;
+        }
         sq = new ConcurrentHashMap<>(rows*cols);
-        this.rows = rows;
-        this.cols = cols;
         for(int i = 0; i < rows; i++) {
             for(int j = 0;j<cols; j++) {
                 sq.put(new Coordinate(i,j), new Untouched(Math.random()<0.25));
             }
         }
     }
-       
+    public static Board fromFile(String s) throws IOException {
+        File f = new File(s);
+        BufferedReader br = new BufferedReader(new FileReader(f));
+        String line = br.readLine();
+        String[] dimensions = line.split(" ");
+        int x = Integer.parseInt(dimensions[0]); int y = Integer.parseInt(dimensions[1]);
+        Board bb = new Board(x, y);
+        int lineNum = 0;
+        while((line = br.readLine()) != null) {
+            String[] bombInfo=line.split(" ");
+            for(int i =0;i<bombInfo.length;i++) {
+                if(Integer.parseInt(bombInfo[i])==1) {
+                    Coordinate c = bb.makeCoord(lineNum, i);
+                    bb.sq.get(c).placeBomb();
+                }
+                else {
+                    Coordinate c = bb.makeCoord(lineNum, i);
+                    bb.sq.get(c).dePlaceBomb();
+                }
+            }
+            lineNum++;
+        }br.close();
+        return bb;
+    }
+    
     private synchronized boolean checkCoord(int x, int y) {
         return x>=0 && y>=0 && x<rows && y<cols;
     }
@@ -193,6 +228,12 @@ public class Board {
         return rep;
     }
     
- 
+ /*
+  * few methods bellow to help with testing
+  */
+    public boolean isBombAt(int x, int y) {
+        Coordinate c = new Coordinate(x,y);
+        return sq.get(c).isBomb();
+    }
     
 }

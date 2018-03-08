@@ -7,7 +7,13 @@ package minesweeper;
  *          +Untouched(bomb:bool)
  */
 public interface Square {
-
+    /*
+     * removes bomb, used only when reading from file and actually there is no
+     * bomb where .25probbability made it be there.
+     * USED ONLY ON Untouched class.
+     */
+    public void dePlaceBomb();
+    public void placeBomb();
     public boolean isBomb();
     
     @Override 

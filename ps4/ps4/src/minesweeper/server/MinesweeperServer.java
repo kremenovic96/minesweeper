@@ -38,6 +38,7 @@ public class MinesweeperServer {
      * @param debug debug mode flag
      * @throws IOException if an error occurs opening the server socket
      */
+    private static Board b;
     public MinesweeperServer(int port, boolean debug) throws IOException {
         serverSocket = new ServerSocket(port);
         this.debug = debug;
@@ -124,14 +125,17 @@ public class MinesweeperServer {
         if ( ! input.matches(regex)) {
             // invalid input
             // TODO Problem 5
+            return "Please enter valid command like look,bye,flag or unflag";
         }
         String[] tokens = input.split(" ");
         if (tokens[0].equals("look")) {
             // 'look' request
             // TODO Problem 5
+            return b.toString();
         } else if (tokens[0].equals("help")) {
             // 'help' request
             // TODO Problem 5
+            return "Please enter valid command like look,bye,flag or unflag";
         } else if (tokens[0].equals("bye")) {
             // 'bye' request
             // TODO Problem 5
@@ -144,9 +148,11 @@ public class MinesweeperServer {
             } else if (tokens[0].equals("flag")) {
                 // 'flag x y' request
                 // TODO Problem 5
+                b.flag(x, y);
             } else if (tokens[0].equals("deflag")) {
                 // 'deflag x y' request
                 // TODO Problem 5
+                b.deflag(x, y);
             }
         }
         // TODO: Should never get here, make sure to return in each of the cases above
@@ -270,7 +276,13 @@ public class MinesweeperServer {
     public static void runMinesweeperServer(boolean debug, Optional<File> file, int sizeX, int sizeY, int port) throws IOException {
         
         // TODO: Continue implementation here in problem 4
-        
+               
+        if (!file.isPresent()) {
+            b = new Board(sizeX, sizeY);
+        }
+        else {
+           b = Board.fromFile(file.get().getAbsolutePath());
+        }
         MinesweeperServer server = new MinesweeperServer(port, debug);
         server.serve();
     }
