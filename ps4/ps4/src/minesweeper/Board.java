@@ -6,10 +6,10 @@ package minesweeper;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.io.*;
 /**
  * TODO: Specification
@@ -179,17 +179,20 @@ public class Board {
      * Checks if there is Square with bomb that is adjecent to x,y pair.
      */
     private synchronized boolean hasBombsAround(int x, int y) {
-        List<Coordinate> adj = getNeighboors(x, y);
-        for(Coordinate f : adj) {
+        //List<Coordinate> adj = getNeighboors(x, y);
+        CopyOnWriteArrayList<Coordinate> adj =  getNeighboors(x,y);
+    	for(Coordinate f : adj) {
             if(sq.get(f).isBomb())
                 return true;                
         }
         return false;
     }
     
-    private List<Coordinate> getNeighboors(int x, int y){
-        List<Coordinate> ls = new ArrayList<>();
-        if (x>0 && y>0) {
+    private CopyOnWriteArrayList<Coordinate> getNeighboors(int x, int y){
+       // List<Coordinate> ls = new ArrayList<>();
+        CopyOnWriteArrayList<Coordinate> ls =  new CopyOnWriteArrayList<>();
+
+    	if (x>0 && y>0) {
             ls.add(new Coordinate(x-1, y-1));
             ls.add(new Coordinate(x-1, y));
             ls.add(new Coordinate(x, y-1));
