@@ -145,11 +145,15 @@ public class Board {
             if (hasBomb) message = BOOM_MESSAGE;
             List<Coordinate> adj = getNeighboors(x,y);
             for(Coordinate f:adj) sq.get(f).decCount();//board[f.row][f.col].decCount();
+            for(Coordinate f:adj) {//dodata ova petlja
+                if(sq.get(f).isBomb()) sq.get(c).incCount();
+            }
             autoDigAround(x, y);
             
-        }
-        if (message == null) return this.toString();
-        return message;
+        } 
+        //if (message == null) return this.toString();
+        //return message;
+        return this.toString();
     }
     
     /*
@@ -188,7 +192,7 @@ public class Board {
         return false;
     }
     
-    private CopyOnWriteArrayList<Coordinate> getNeighboors(int x, int y){
+    public CopyOnWriteArrayList<Coordinate> getNeighboors(int x, int y){
        // List<Coordinate> ls = new ArrayList<>();
         CopyOnWriteArrayList<Coordinate> ls =  new CopyOnWriteArrayList<>();
 
@@ -197,7 +201,7 @@ public class Board {
             ls.add(new Coordinate(x-1, y));
             ls.add(new Coordinate(x, y-1));
         }
-        if(x>0 && y==0) {
+        if(x>0 && y<cols-1) {
             ls.add(new Coordinate(x, y+1));
         }
         if(x==0 && y>0) {

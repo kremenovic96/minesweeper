@@ -107,6 +107,8 @@ public class PublishedTest {
         assertEquals("- - - - - - -", in.readLine());
 
         out.println("dig 3 1");
+        System.out.println(in.readLine());
+
         assertEquals("- - - - - - -", in.readLine());
         assertEquals("- - - 1 - - -", in.readLine());
         assertEquals("- - - - - - -", in.readLine());

@@ -148,18 +148,18 @@ out.println("Welcome to Minesweeper. Board: "+b.cols+" columns by "+b.rows+"."+"
             if (tokens[0].equals("dig")) {
                 // 'dig x y' request
                 // TODO Problem 5
-                b.dig(x, y);
-                return b.toString();
+                return b.dig(x, y);
+                //return b.toString();
             } else if (tokens[0].equals("flag")) {
                 // 'flag x y' request
                 // TODO Problem 5
-                b.flag(x, y);
-                return b.toString();
+                return b.flag(x, y);
+                //return b.toString();
             } else if (tokens[0].equals("deflag")) {
                 // 'deflag x y' request
                 // TODO Problem 5
-                b.deflag(x, y);
-                return b.toString();
+                return b.deflag(x, y);
+                //return b.toString();
             }
         }
         // TODO: Should never get here, make sure to return in each of the cases above

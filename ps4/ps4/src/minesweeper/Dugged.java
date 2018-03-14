@@ -16,7 +16,6 @@ public class Dugged implements Square{
     public void decCount() {
         if(count>0)count--;
     }
-    
     @Override
     public boolean isBomb() {
         // TODO Auto-generated method stub

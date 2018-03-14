@@ -75,7 +75,7 @@ public class BoardTest {
        // System.out.println(a.sq.size());
         a.dig(0, 1);
         String aa = "-   -\n- - -\n- - -\n";
-        System.out.print(a);
+        //System.out.print(a);
         assertEquals(a.toString(), aa);   
         a.dig(2, 1);
         aa = "-   -\n- - -\n-   -\n";
@@ -112,8 +112,9 @@ public class BoardTest {
                  if(a.isBombAt(i, j)) bombs++;
              }
          }
-         assertEquals(5, bombs);
-
+         assertEquals(6, bombs);
+         a.dig(1, 1);
+         System.out.println(a);
     }
         
     
