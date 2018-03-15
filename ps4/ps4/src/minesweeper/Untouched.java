@@ -13,7 +13,7 @@ public class Untouched implements Square{
         return count;
     }
     public void incCount() {
-        count ++;
+        count++;
     }
     public void decCount() {
         if(count>0)count--;

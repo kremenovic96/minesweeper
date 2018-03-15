@@ -115,6 +115,12 @@ public class BoardTest {
          assertEquals(6, bombs);
          a.dig(1, 1);
          System.out.println(a);
+         a.dig(0, 2);
+         System.out.println(a);
+
+        /* a = Board.fromFile("test/minesweeper/board_file_5");
+         a.dig(3, 1);
+         System.out.println(a);*/
     }
         
     

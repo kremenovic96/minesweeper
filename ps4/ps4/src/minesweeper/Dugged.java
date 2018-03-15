@@ -10,7 +10,7 @@ public class Dugged implements Square{
     }
     @Override
     public void incCount() {
-        count ++;
+        count++;
     }
     @Override
     public void decCount() {
