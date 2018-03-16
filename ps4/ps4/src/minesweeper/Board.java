@@ -228,9 +228,9 @@ public class Board {
             ls.add(new Coordinate(x-1, y+1));
 
         }///*
-        if(y+1<cols && x+1<rows) {
+     /*   if(y+1<cols && x+1<rows) {
         	ls.add(new Coordinate(x+1,y+1));
-        }
+        }*/
         /*if(y-1>0 && x-1 >0) {
         	ls.add(new Coordinate(x-1,y-1));
         }
