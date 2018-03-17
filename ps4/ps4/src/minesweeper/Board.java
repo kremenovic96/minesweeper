@@ -212,7 +212,7 @@ public class Board {
             ls.add(new Coordinate(x+1, y+1));
 
         }
-        if(x<rows-1 && y==cols-1) {
+        if(x<rows-1 && y<cols-1) {
             ls.add(new Coordinate(x+1, y-1));
 
         }
@@ -221,12 +221,15 @@ public class Board {
 
         }//
         if(y+1<cols && x+1<rows) {
-        	ls.add(new Coordinate(x+1,x+1));
+        	ls.add(new Coordinate(x+1,y+1));
         }
         if(y-1>0 && x-1 >0) {
-        	ls.add(new Coordinate(x-1,x-1));
+        	ls.add(new Coordinate(x-1,y-1));
         }
-        
+       /* 
+        if(x+1<rows && y-1>0) {
+            ls.add(new Coordinate(x+1,y-1));
+        }*/
         return ls;
     }
     
