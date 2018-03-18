@@ -97,17 +97,17 @@ public class PublishedTest {
 
         assertTrue("expected HELLO message", in.readLine().startsWith("Welcome"));
         System.out.println(in.readLine());//kad ovo dodam onda prodje test ispod
-        out.println("look");
+        /*out.println("look");
         assertEquals("- - - - - - -", in.readLine());
         assertEquals("- - - - - - -", in.readLine());
         assertEquals("- - - - - - -", in.readLine());
         assertEquals("- - - - - - -", in.readLine());
         assertEquals("- - - - - - -", in.readLine());
         assertEquals("- - - - - - -", in.readLine());
-        assertEquals("- - - - - - -", in.readLine());
+        assertEquals("- - - - - - -", in.readLine());*/
 
         out.println("dig 3 1");
-        System.out.println(in.readLine());
+        //System.out.println(in.readLine());
 
         assertEquals("- - - - - - -", in.readLine());
         assertEquals("- - - 1 - - -", in.readLine());

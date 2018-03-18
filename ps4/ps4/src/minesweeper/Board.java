@@ -47,6 +47,10 @@ public class Board {
             hash = 71 * hash + this.col;
             return hash;
         }
+        @Override
+        public String toString() {
+        	return Integer.toString(row) +","+ Integer.toString(col) + " ";
+        }
     }
     
     public final int rows;
@@ -142,12 +146,19 @@ public class Board {
             boolean hasBomb = sq.get(c).isBomb();//continue this method
             if (sq.get(c).isUntouched())
                 sq.put(c, sq.get(c).dig());
+            /*System.out.println(sq.get(c).isDug());
+            System.out.println(sq.get(c).getCount());//A*/
             if (hasBomb) message = BOOM_MESSAGE;
             List<Coordinate> adj = getNeighboors(x,y);
-            for(Coordinate f:adj) sq.get(f).decCount();//board[f.row][f.col].decCount();
+            
+            for(Coordinate f:adj) {if(!sq.get(f).isDug()) sq.get(f).decCount();}//board[f.row][f.col].decCount();
             for(Coordinate f:adj) {//dodata ova petlja
+            	System.out.println(sq.get(c).getCount()+" first, size of adj: "+adj.size());
                 if(sq.get(f).isBomb()) sq.get(c).incCount();
-            }
+            } System.out.println(adj);
+            //System.out.println(hasBombsAround(x,y));
+          //  System.out.println(sq.get(new Coordinate(6,0)).isBomb()+ "6,1bomb");
+
             autoDigAround(x, y);
             
         } 
@@ -165,18 +176,19 @@ public class Board {
      */
     private synchronized void autoDigAround(int x, int y) {
         List<Coordinate> adj = getNeighboors(x,y);
-        if (hasBombsAround(x, y)) return;
+        if (hasBombsAround(x, y)) {System.out.println("BOOMBBBB AROUND");return;}
         for(Coordinate f:adj) {
             if(sq.get(f).isUntouched())/*if(board[f.row][f.col].isUntouched())*/ {
                 /*Square sq = board[f.row][f.col];
                 board[f.row][f.col] = sq.dig();*/
-                sq.put(f, sq.get(f).dig());
+            	sq.put(f, sq.get(f).dig());
             }
-            if(!hasBombsAround(f.row, f.col)) {
+            /*if(!hasBombsAround(f.row, f.col)) {
                 for(Coordinate s:getNeighboors(f.row, f.col))
                     adj.add(s);
-            }
+            }*/
         }
+       System.out.println("autodigaroundwashere");
     }
     
     /*
@@ -201,10 +213,10 @@ public class Board {
             ls.add(new Coordinate(x-1, y));
             ls.add(new Coordinate(x, y-1));
         }
-        if(x>0 && y<cols-1) {
+        if(x>=0 && y<cols-1) {
             ls.add(new Coordinate(x, y+1));
         }
-        if(x==0 && y>0) {
+        if(x<rows-1 && y>=0) {
             ls.add(new Coordinate(x+1, y));
         }
         
@@ -212,25 +224,39 @@ public class Board {
             ls.add(new Coordinate(x+1, y+1));
 
         }
-        if(x<rows-1 && y<cols-1) {
+        if(x<rows-1 && y>0) {
             ls.add(new Coordinate(x+1, y-1));
 
         }
-        if(x==rows-1 && y < cols-1) {
+        if(x>0 && y < cols-1) {
             ls.add(new Coordinate(x-1, y+1));
 
         }//
-        if(y+1<cols && x+1<rows) {
+        /*if(y+1<cols && x+1<rows) {
         	ls.add(new Coordinate(x+1,y+1));
-        }
-        if(y-1>0 && x-1 >0) {
+        }*/
+       /* if(y-1>0 && x-1 >0) {
         	ls.add(new Coordinate(x-1,y-1));
-        }
+        }*/
        /* 
         if(x+1<rows && y-1>0) {
             ls.add(new Coordinate(x+1,y-1));
         }*/
-        return ls;
+        ///*
+     /*   if(y+1<cols && x+1<rows) {
+        	ls.add(new Coordinate(x+1,y+1));
+        }*/
+        /*if(y-1>0 && x-1 >0) {
+        	ls.add(new Coordinate(x-1,y-1));
+        }
+        if(x+1<rows && y-1>0) {
+        	ls.add(new Coordinate(x+1, y-1));
+        }
+        if(x-1>0 && y+1<cols) {
+        	ls.add(new Coordinate(x-1, y+1));
+        }*/
+        
+    return ls;
     }
     
     @Override
