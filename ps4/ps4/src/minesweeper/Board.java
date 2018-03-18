@@ -98,6 +98,7 @@ public class Board {
             }
             lineNum++;
         }br.close();
+        bb.initBombCounts();
         return bb;
     }
     
@@ -143,7 +144,6 @@ public class Board {
         String message = null;
         if (checkCoord(x,y)) {
             Coordinate c = new Coordinate(x,y);
-            //Square sq = board[x][y];
             boolean hasBomb = sq.get(c).isBomb();//continue this method             
             if (sq.get(c).isUntouched())
                 sq.put(c, sq.get(c).dig());
@@ -156,14 +156,10 @@ public class Board {
             List<Coordinate> adj = getNeighboors(x,y);
             
             for(Coordinate f:adj) {if(!sq.get(c).isBomb()) sq.get(f).decCount();}//board[f.row][f.col].decCount();
-            for(Coordinate f:adj) {//dodata ova petlja
+            /*for(Coordinate f:adj) {
             	System.out.println(sq.get(c).getCount()+" first, size of adj: "+adj.size());
                 if(sq.get(f).isBomb()) sq.get(c).incCount();
-            } System.out.println(adj);
-            //System.out.println(hasBombsAround(x,y));
-          //  System.out.println(sq.get(new Coordinate(6,0)).isBomb()+ "6,1bomb");
-            if(hasBomb) sq.get(c).dePlaceBomb();
-
+            } */System.out.println(adj);
             autoDigAround(x, y);
             
         } 
@@ -195,6 +191,7 @@ public class Board {
             }*/
         }
        System.out.println("autodigaroundwashere");
+       System.out.println(sq.get(new Coordinate(0,6)).getCount()+" 0,6count");
     }
     
     /*
@@ -219,22 +216,22 @@ public class Board {
             ls.add(new Coordinate(x-1, y));
             ls.add(new Coordinate(x, y-1));
         }
-        if(x>=0 && y<cols-1) {
+        if(x>=0 && y<rows-1) {
             ls.add(new Coordinate(x, y+1));
         }
-        if(x<rows-1 && y>=0) {
+        if(x<cols-1 && y>=0) {
             ls.add(new Coordinate(x+1, y));
         }
         
-        if(x<rows-1 && y<cols-1) {
+        if(x<cols-1 && y<rows-1) {
             ls.add(new Coordinate(x+1, y+1));
 
         }
-        if(x<rows-1 && y>0) {
+        if(x<cols-1 && y>0) {
             ls.add(new Coordinate(x+1, y-1));
 
         }
-        if(x>0 && y < cols-1) {
+        if(x>0 && y < rows-1) {
             ls.add(new Coordinate(x-1, y+1));
 
         }//
@@ -284,6 +281,16 @@ public class Board {
     public boolean isBombAt(int x, int y) {
         Coordinate c = new Coordinate(x,y);
         return sq.get(c).isBomb();
+    }
+    private void initBombCounts() {
+        for(Coordinate c:sq.keySet()) {
+            CopyOnWriteArrayList<Coordinate> adj =  getNeighboors(c.col,c.row);
+            for(Coordinate f:adj) {
+                if(sq.get(f).isBomb())
+                    sq.get(c).incCount();
+            }
+
+        }
     }
     
 }

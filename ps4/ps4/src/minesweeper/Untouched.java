@@ -28,7 +28,7 @@ public class Untouched implements Square{
     @Override
     public Square dig() {
         // TODO Auto-generated method stub
-        return new Dugged();
+        return new Dugged(count);
     }
 
     @Override
