@@ -118,9 +118,11 @@ public class PublishedTest {
         assertEquals("- - - - - - -", in.readLine());
 
         out.println("dig 4 1");
+        System.out.println(in.readLine());
         assertEquals("BOOM!", in.readLine());
 
         out.println("look"); // debug mode is on
+        System.out.println(in.readLine());
         assertEquals("             ", in.readLine());
         assertEquals("             ", in.readLine());
         assertEquals("             ", in.readLine());

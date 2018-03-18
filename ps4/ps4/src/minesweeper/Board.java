@@ -15,7 +15,7 @@ import java.io.*;
  * TODO: Specification
  */
 public class Board {
-    public static String BOOM_MESSAGE = "Boom!";
+    public static String BOOM_MESSAGE = "BOOM!\n";
     // TODO: Abstraction function, rep invariant, rep exposure, thread safety
     /*
      * ADT for representing board consisting of Square objects
@@ -31,8 +31,8 @@ public class Board {
         private final int col;
         
         public Coordinate(int x, int y) {
-            this.row = x;
-            this.col =y;
+            this.col = x;
+            this.row =y;
         }
         @Override
         public boolean equals(Object thatObject) {
@@ -49,7 +49,7 @@ public class Board {
         }
         @Override
         public String toString() {
-        	return Integer.toString(row) +","+ Integer.toString(col) + " ";
+        	return Integer.toString(col) +","+ Integer.toString(row) + " ";
         }
     }
     
@@ -60,17 +60,17 @@ public class Board {
     }
     //private final Square[][] board;
     private ConcurrentMap<Coordinate, Square> sq;
-    public Board(int rowss, int colss) {
-        if(rowss == -1 && colss==-1) {
+    public Board(int x, int y) {
+        if(x == -1 && y==-1) {
             this.rows = 10; this.cols = 10;
         }
         else {
-        this.rows = rowss;
-        this.cols = colss;
+        this.rows = y;
+        this.cols = x;
         }
         sq = new ConcurrentHashMap<>(rows*cols);
-        for(int i = 0; i < rows; i++) {
-            for(int j = 0;j<cols; j++) {
+        for(int i = 0; i < cols; i++) {
+            for(int j = 0;j<rows; j++) {
                 sq.put(new Coordinate(i,j), new Untouched(Math.random()<0.25));
             }
         }
@@ -85,13 +85,14 @@ public class Board {
         int lineNum = 0;
         while((line = br.readLine()) != null) {
             String[] bombInfo=line.split(" ");
-            for(int i =0;i<bombInfo.length;i++) {
+            for(int i =0;i<bombInfo.length;i++) { System.out.println(lineNum); System.out.println(bb.makeCoord(i, lineNum));
                 if(Integer.parseInt(bombInfo[i])==1) {
-                    Coordinate c = bb.makeCoord(lineNum, i);
+                    Coordinate c = bb.makeCoord(i, lineNum);
                     bb.sq.get(c).placeBomb();
+                    System.out.println("bomb found in a file at position "+c.toString() +"is "+i+" "+lineNum);
                 }
                 else {
-                    Coordinate c = bb.makeCoord(lineNum, i);
+                    Coordinate c = bb.makeCoord(i, lineNum);
                     bb.sq.get(c).dePlaceBomb();
                 }
             }
@@ -101,7 +102,7 @@ public class Board {
     }
     
     private synchronized boolean checkCoord(int x, int y) {
-        return x>=0 && y>=0 && x<rows && y<cols;
+        return x>=0 && y>=0 && x<cols && y<rows;
     }
 
     
@@ -143,28 +144,32 @@ public class Board {
         if (checkCoord(x,y)) {
             Coordinate c = new Coordinate(x,y);
             //Square sq = board[x][y];
-            boolean hasBomb = sq.get(c).isBomb();//continue this method
+            boolean hasBomb = sq.get(c).isBomb();//continue this method             
             if (sq.get(c).isUntouched())
                 sq.put(c, sq.get(c).dig());
             /*System.out.println(sq.get(c).isDug());
             System.out.println(sq.get(c).getCount());//A*/
-            if (hasBomb) message = BOOM_MESSAGE;
+            if (hasBomb) {
+            	message= BOOM_MESSAGE;
+            	//sq.get(c).dePlaceBomb();
+            	}
             List<Coordinate> adj = getNeighboors(x,y);
             
-            for(Coordinate f:adj) {if(!sq.get(f).isDug()) sq.get(f).decCount();}//board[f.row][f.col].decCount();
+            for(Coordinate f:adj) {if(!sq.get(c).isBomb()) sq.get(f).decCount();}//board[f.row][f.col].decCount();
             for(Coordinate f:adj) {//dodata ova petlja
             	System.out.println(sq.get(c).getCount()+" first, size of adj: "+adj.size());
                 if(sq.get(f).isBomb()) sq.get(c).incCount();
             } System.out.println(adj);
             //System.out.println(hasBombsAround(x,y));
           //  System.out.println(sq.get(new Coordinate(6,0)).isBomb()+ "6,1bomb");
+            if(hasBomb) sq.get(c).dePlaceBomb();
 
             autoDigAround(x, y);
             
         } 
-        //if (message == null) return this.toString();
-        //return message;
-        return this.toString();
+        if (message == null) return this.toString();
+        return message;
+        //return this.toString();
     }
     
     /*
@@ -182,6 +187,7 @@ public class Board {
                 /*Square sq = board[f.row][f.col];
                 board[f.row][f.col] = sq.dig();*/
             	sq.put(f, sq.get(f).dig());
+            	this.dig(f.col, f.row);
             }
             /*if(!hasBombsAround(f.row, f.col)) {
                 for(Coordinate s:getNeighboors(f.row, f.col))
@@ -264,7 +270,7 @@ public class Board {
         String rep = "";
         for(int i =0;i<rows;i++) {
             for(int j=0;j<cols;j++) {
-                rep += sq.get(new Coordinate(i,j));
+                rep += sq.get(new Coordinate(j,i));
                 if(j<cols-1) rep += " ";
             }
             rep += "\n";
