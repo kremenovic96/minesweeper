@@ -96,7 +96,6 @@ public class PublishedTest {
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
         assertTrue("expected HELLO message", in.readLine().startsWith("Welcome"));
-        System.out.println(in.readLine());//kad ovo dodam onda prodje test ispod
         out.println("look");
         assertEquals("- - - - - - -", in.readLine());
         assertEquals("- - - - - - -", in.readLine());
@@ -107,7 +106,6 @@ public class PublishedTest {
         assertEquals("- - - - - - -", in.readLine());
 
         out.println("dig 3 1");
-        //System.out.println(in.readLine());
 
         assertEquals("- - - - - - -", in.readLine());
         assertEquals("- - - 1 - - -", in.readLine());
@@ -118,11 +116,10 @@ public class PublishedTest {
         assertEquals("- - - - - - -", in.readLine());
 
         out.println("dig 4 1");
-        //System.out.println(in.readLine());
         assertEquals("BOOM!", in.readLine());
 
         out.println("look"); // debug mode is on
-        //System.out.println(in.readLine());
+
         assertEquals("             ", in.readLine());
         assertEquals("             ", in.readLine());
         assertEquals("             ", in.readLine());

@@ -15,7 +15,7 @@ import java.io.*;
  * TODO: Specification
  */
 public class Board {
-    public static String BOOM_MESSAGE = "BOOM!\n";
+    public static String BOOM_MESSAGE = "BOOM!";
     // TODO: Abstraction function, rep invariant, rep exposure, thread safety
     /*
      * ADT for representing board consisting of Square objects
@@ -270,7 +270,8 @@ public class Board {
                 rep += sq.get(new Coordinate(j,i));
                 if(j<cols-1) rep += " ";
             }
-            rep += "\n";
+            if(i != rows-1)
+                rep += "\n";
         }
         return rep;
     }
