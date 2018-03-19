@@ -85,11 +85,11 @@ public class Board {
         int lineNum = 0;
         while((line = br.readLine()) != null) {
             String[] bombInfo=line.split(" ");
-            for(int i =0;i<bombInfo.length;i++) { System.out.println(lineNum); System.out.println(bb.makeCoord(i, lineNum));
+            for(int i =0;i<bombInfo.length;i++) { /*System.out.println(lineNum);*/ //System.out.println(bb.makeCoord(i, lineNum));
                 if(Integer.parseInt(bombInfo[i])==1) {
                     Coordinate c = bb.makeCoord(i, lineNum);
                     bb.sq.get(c).placeBomb();
-                    System.out.println("bomb found in a file at position "+c.toString() +"is "+i+" "+lineNum);
+                    //System.out.println("bomb found in a file at position "+c.toString() +"is "+i+" "+lineNum);
                 }
                 else {
                     Coordinate c = bb.makeCoord(i, lineNum);
@@ -155,11 +155,11 @@ public class Board {
             	}
             List<Coordinate> adj = getNeighboors(x,y);
             
-            for(Coordinate f:adj) {if(!sq.get(c).isBomb()) sq.get(f).decCount();}//board[f.row][f.col].decCount();
+            for(Coordinate f:adj) {if(hasBomb) sq.get(f).decCount();}//board[f.row][f.col].decCount();
             /*for(Coordinate f:adj) {
             	System.out.println(sq.get(c).getCount()+" first, size of adj: "+adj.size());
                 if(sq.get(f).isBomb()) sq.get(c).incCount();
-            } */System.out.println(adj);
+            } *///System.out.println(adj);
             autoDigAround(x, y);
             
         } 
@@ -177,7 +177,7 @@ public class Board {
      */
     private synchronized void autoDigAround(int x, int y) {
         List<Coordinate> adj = getNeighboors(x,y);
-        if (hasBombsAround(x, y)) {System.out.println("BOOMBBBB AROUND");return;}
+        if (hasBombsAround(x, y)) {/*System.out.println("BOOMBBBB AROUND");*/return;}
         for(Coordinate f:adj) {
             if(sq.get(f).isUntouched())/*if(board[f.row][f.col].isUntouched())*/ {
                 /*Square sq = board[f.row][f.col];
@@ -190,8 +190,8 @@ public class Board {
                     adj.add(s);
             }*/
         }
-       System.out.println("autodigaroundwashere");
-       System.out.println(sq.get(new Coordinate(0,6)).getCount()+" 0,6count");
+       //System.out.println("autodigaroundwashere");
+       //System.out.println(sq.get(new Coordinate(0,6)).getCount()+" 0,6count");
     }
     
     /*

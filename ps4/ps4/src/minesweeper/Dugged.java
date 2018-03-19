@@ -45,7 +45,7 @@ public class Dugged implements Square{
     
     @Override
     public String toString() {
-        return (this.count>=0) ? Integer.toString(this.count) : " ";
+        return (this.count>0) ? Integer.toString(this.count) : " ";
     }
     
     @Override

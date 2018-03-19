@@ -105,7 +105,7 @@ out.println("Welcome to Minesweeper. Board: "+b.cols+" columns by "+b.rows+"."+"
                 String output = handleRequest(line);
                 if (output != null) {
                     // TODO: Consider improving spec of handleRequest to avoid use of null
-                    System.out.print(output);
+                    System.out.print(output + " AAA\n");
                     out.println(output);
                 }
             }
@@ -127,7 +127,7 @@ out.println("Welcome to Minesweeper. Board: "+b.cols+" columns by "+b.rows+"."+"
         if ( ! input.matches(regex)) {
             // invalid input
             // TODO Problem 5
-            return "Please enter valid command like look,bye,flag or unflag";
+            return "Please enter valid command like look,bye,flag or unflag\n";
         }
         
         String[] tokens = input.split(" ");
@@ -148,7 +148,7 @@ out.println("Welcome to Minesweeper. Board: "+b.cols+" columns by "+b.rows+"."+"
             if (tokens[0].equals("dig")) {
                 // 'dig x y' request
                 // TODO Problem 5
-                return  b.dig(x, y);
+                return  b.dig(x, y) + "\n";
                 //return b.toString();
             } else if (tokens[0].equals("flag")) {
                 // 'flag x y' request
