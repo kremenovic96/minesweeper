@@ -32,8 +32,8 @@ public class BoardTest {
     public void testStartingState() {
         Board a = new Board(3,3);
         Board b = new Board(4,4);
-        String aa = "- - -\n- - -\n- - -\n";
-        String bb = "- - - -\n- - - -\n- - - -\n- - - -\n";
+        String aa = "- - -\n- - -\n- - -";
+        String bb = "- - - -\n- - - -\n- - - -\n- - - -";
        // System.out.println(aa);
         assertEquals(a.toString(), aa);
         assertEquals(b.toString(), bb);
@@ -48,23 +48,23 @@ public class BoardTest {
     public void testFlagAndDeflag() {
         Board a = new Board(3,3);
         a.flag(1, 0);
-        String aa = "- F -\n- - -\n- - -\n";
+        String aa = "- F -\n- - -\n- - -";
         assertEquals(a.toString(), aa);
         a.flag(0, 1);
-        aa = "- F -\nF - -\n- - -\n";
+        aa = "- F -\nF - -\n- - -";
         assertEquals(a.toString(), aa);
         a.flag(2, 2);
-        aa = "- F -\nF - -\n- - F\n";
+        aa = "- F -\nF - -\n- - F";
         assertEquals(a.toString(), aa);
         a.deflag(0, 1);
-        aa = "- F -\n- - -\n- - F\n";
+        aa = "- F -\n- - -\n- - F";
         assertEquals(a.toString(), aa);
         a.deflag(2, 2);
         a.deflag(1,1);
-        aa = "- F -\n- - -\n- - -\n";
+        aa = "- F -\n- - -\n- - -";
         assertEquals(a.toString(), aa);
         a.deflag(1, 0);
-        aa = "- - -\n- - -\n- - -\n";
+        aa = "- - -\n- - -\n- - -";
         assertEquals(a.toString(), aa);        
     }
   
@@ -74,14 +74,14 @@ public class BoardTest {
         Board a = new Board(3,3);
        // System.out.println(a.sq.size());
         a.dig(1, 0);
-        String aa = "-   -\n- - -\n- - -\n";
+        String aa = "-   -\n- - -\n- - -";
         //System.out.print(a);
         assertEquals(a.toString(), aa);   
         a.dig(1, 2);
-        aa = "-   -\n- - -\n-   -\n";
+        aa = "-   -\n- - -\n-   -";
         assertEquals(a.toString(), aa);   
         a.dig(2, 2);
-        aa = "-   -\n- - -\n-    \n";
+        aa = "-   -\n- - -\n-    ";
         assertEquals(a.toString(), aa);   
     }
     /*

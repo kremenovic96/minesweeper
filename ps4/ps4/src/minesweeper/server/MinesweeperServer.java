@@ -29,6 +29,7 @@ public class MinesweeperServer {
     /** True if the server should *not* disconnect a client after a BOOM message. */
     private final boolean debug;
 
+    private int numOfPlayers = 0;
     // TODO: Abstraction function, rep invariant, rep exposure
 
     /**
@@ -54,7 +55,7 @@ public class MinesweeperServer {
     public void serve() throws IOException {
         while (true) {
             // block until a client connects
-            Socket socket = serverSocket.accept();
+            final Socket socket = serverSocket.accept();
             /*
              * create thread for each player
              */
@@ -97,15 +98,16 @@ public class MinesweeperServer {
      */
     private void handleConnection(Socket socket) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        numOfPlayers++;
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-out.println("Welcome to Minesweeper. Board: "+b.cols+" columns by "+b.rows+"."+" Players: "+ "N "+"including you. "+" Type 'help' for help.\r\n");
+out.println("Welcome to Minesweeper. Board: "+b.cols+" columns by "+b.rows+"."+" Players: "+numOfPlayers +" including you. "+" Type 'help' for help.");
 //out.flush();
         try {
             for (String line = in.readLine(); line != null; line = in.readLine()) {
                 String output = handleRequest(line);
                 if (output != null) {
                     // TODO: Consider improving spec of handleRequest to avoid use of null
-                    System.out.print(output + " AAA\n");
+                    //System.out.print(output + " AAA\n");
                     out.println(output);
                 }
             }
@@ -142,13 +144,20 @@ out.println("Welcome to Minesweeper. Board: "+b.cols+" columns by "+b.rows+"."+"
         } else if (tokens[0].equals("bye")) {
             // 'bye' request
             // TODO Problem 5
+            numOfPlayers--;
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else {
             int x = Integer.parseInt(tokens[1]);
             int y = Integer.parseInt(tokens[2]);
             if (tokens[0].equals("dig")) {
                 // 'dig x y' request
                 // TODO Problem 5
-                return  b.dig(x, y) + "\n";
+                return b.dig(x, y);
                 //return b.toString();
             } else if (tokens[0].equals("flag")) {
                 // 'flag x y' request
@@ -296,4 +305,4 @@ out.println("Welcome to Minesweeper. Board: "+b.cols+" columns by "+b.rows+"."+"
         
         
     }
-}
+} //abcdefghijklmnopqrstufwxyz

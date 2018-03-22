@@ -123,7 +123,7 @@ public class PublishedTest {
 
         assertEquals("BOOM!", in.readLine());
 
-        out.println("look"); // debug mode is on
+        out.println("look"); // debug mode is on///
         System.out.println(in.readLine());
         System.out.println(in.readLine());
         assertEquals("             ", in.readLine());
@@ -136,5 +136,6 @@ public class PublishedTest {
 
         out.println("bye");
         socket.close();
+        
     }
 }
