@@ -140,17 +140,17 @@ out.println("Welcome to Minesweeper. Board: "+b.cols+" columns by "+b.rows+"."+"
         } else if (tokens[0].equals("help")) {
             // 'help' request
             // TODO Problem 5
-            return "Please enter valid command like look,bye,flag or unflag";
+            return "Please enter valid command like look,bye,flag or deflag";
         } else if (tokens[0].equals("bye")) {
             // 'bye' request
             // TODO Problem 5
             numOfPlayers--;
-            try {
+            /*try {
                 serverSocket.close();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            }
+            }*/
         } else {
             int x = Integer.parseInt(tokens[1]);
             int y = Integer.parseInt(tokens[2]);
