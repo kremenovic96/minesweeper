@@ -214,8 +214,11 @@ public class Board {
     	if (x>0 && y>0) {
             ls.add(new Coordinate(x-1, y-1));
             ls.add(new Coordinate(x-1, y));
-            ls.add(new Coordinate(x, y-1));
+        //    ls.add(new Coordinate(x, y-1));
         }
+    	if(x>=0 && y>0) {
+    		ls.add(new Coordinate(x, y-1));
+    	}
         if(x>=0 && y<rows-1) {
             ls.add(new Coordinate(x, y+1));
         }

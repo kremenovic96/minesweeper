@@ -131,7 +131,7 @@ public class PublishedTest {
         out.println("bye");
         socket.close();
     }
-    //@Test(timeout = 10000)
+   // @Test(timeout = 10000)
     public void publishedTest1() throws IOException{
 
         Thread thread = startMinesweeperServer("board_file_5");
@@ -191,6 +191,41 @@ public class PublishedTest {
         assertEquals("- - - - - - -", in.readLine());
         assertEquals("- - - - - - -", in.readLine());
         assertEquals("- - - - - - -", in.readLine());
+        out.println("bye");
+        socket.close();
+        
+    }
+    
+    @Test(timeout = 10000)
+    public void publishedTest2() throws IOException{
+
+        Thread thread = startMinesweeperServer("myboard");
+
+        Socket socket = connectToMinesweeperServer(thread);
+        
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+        assertTrue("expected HELLO message", in.readLine().startsWith("Welcome"));
+        out.println("look");
+       // System.out.println(in.readLine());
+        assertEquals("- - -", in.readLine());
+        assertEquals("- - -", in.readLine());
+        assertEquals("- - -", in.readLine());
+        assertEquals("- - -", in.readLine());
+
+        out.println("dig 1 3");
+        assertEquals("- - -", in.readLine());
+        assertEquals("- - -", in.readLine());
+        assertEquals("- - -", in.readLine());
+        assertEquals("- 4 -", in.readLine());
+        
+        out.println("dig 0 3");
+        assertEquals("- - -", in.readLine());
+        assertEquals("- - -", in.readLine());
+        assertEquals("- - -", in.readLine());
+        assertEquals("2 4 -", in.readLine());
+        
         out.println("bye");
         socket.close();
         
