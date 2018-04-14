@@ -106,12 +106,19 @@ out.println("Welcome to Minesweeper. Board: "+b.cols+" columns by "+b.rows+"."+"
             for (String line = in.readLine(); line != null; line = in.readLine()) {
                 String output = handleRequest(line);
                 if (output != null) {
+                    if(output.equals("BYE") || output.equals("BOOM!")) {
+                        out.println(output);
+                        in.close();
+                        out.close();
+                        serverSocket.close();
+                    }
                     // TODO: Consider improving spec of handleRequest to avoid use of null
                     //System.out.print(output + " AAA\n");
                     out.println(output);
                 }
             }
         } finally {
+            //maybe flush it
             out.close();
             in.close();
         }
@@ -145,12 +152,7 @@ out.println("Welcome to Minesweeper. Board: "+b.cols+" columns by "+b.rows+"."+"
             // 'bye' request
             // TODO Problem 5
             numOfPlayers--;
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            return "BYE";
         } else {
             int x = Integer.parseInt(tokens[1]);
             int y = Integer.parseInt(tokens[2]);
